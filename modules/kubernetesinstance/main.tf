@@ -81,8 +81,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 #Registry Pull Permission for the Cluster
 resource "azurerm_role_assignment" "acr" {
-  count = var.registry_id == "" ? 0 : 1 #TEMP. TODO REMOVE
-
   scope                = var.registry_id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity.0.object_id

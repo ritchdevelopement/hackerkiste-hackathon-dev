@@ -5,7 +5,7 @@ variable "kubernetes_version" {
   default = "1.21.2"
 }
 
-variable "registry_id" { #TODO move to internal...
+variable "registry_id" {
   type        = string
   description = "Default Registry of the Cluster"
 }

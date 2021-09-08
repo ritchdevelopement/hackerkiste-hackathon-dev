@@ -30,7 +30,7 @@ module "instance-weu" {
   }
   kubernetes_version = "1.21.2"
 
-  registry_id = "" #TODO
+  registry_id = "2021hackathon.azurecr.io"
 }
 
 module "instance-1-np-1" {
