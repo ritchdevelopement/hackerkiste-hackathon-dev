@@ -6,15 +6,15 @@ resource "azurerm_resource_group" "global" {
 
 # AKS cluster
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = var.prefix
-  resource_group_name = azurerm_resource_group.global.name
-  location            = var.location
-  dns_prefix          = format("%s-%s", var.prefix, "hackathon")
-  node_resource_group = format("%s-%s", azurerm_resource_group.global.name, "aksrg")
+  name                    = var.prefix
+  resource_group_name     = azurerm_resource_group.global.name
+  location                = var.location
+  dns_prefix              = format("%s-%s", var.prefix, "hackathon")
+  node_resource_group     = format("%s-%s", azurerm_resource_group.global.name, "aksrg")
   private_cluster_enabled = false
 
   default_node_pool {
-    name = "default"
+    name                  = "default"
     enable_auto_scaling   = true
     min_count             = 1
     max_count             = 10
@@ -34,7 +34,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     dns_service_ip     = "192.168.0.10"
     docker_bridge_cidr = "192.168.128.1/17"
     outbound_type      = "loadBalancer"
-    load_balancer_sku = "standard"
+    load_balancer_sku  = "standard"
   }
 
   kubernetes_version = var.kubernetes_version
@@ -81,7 +81,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 #Registry Pull Permission for the Cluster
 resource "azurerm_role_assignment" "acr" {
-  count = var.registry_id == ""? 0: 1 #TEMP. TODO REMOVE
+  count = var.registry_id == "" ? 0 : 1 #TEMP. TODO REMOVE
 
   scope                = var.registry_id
   role_definition_name = "AcrPull"

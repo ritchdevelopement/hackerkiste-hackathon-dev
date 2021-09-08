@@ -25,7 +25,7 @@ variable "name" {
   description = "the name of the nodepool"
 }
 variable "kubernetes_cluster" {
-  type = any
+  type        = any
   description = "Kubernetes Cluster Object"
 }
 variable "max_count" {
@@ -60,7 +60,7 @@ variable "taints" {
 }
 
 variable "availability_zones" {
-  type = list(string)
+  type        = list(string)
   description = "Overrides the default Availability Zones Please check "
-  default = [1, 2, 3]
+  default     = [1, 2, 3]
 }

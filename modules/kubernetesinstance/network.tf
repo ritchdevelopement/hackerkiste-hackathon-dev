@@ -7,16 +7,16 @@ resource "azurerm_virtual_network" "net" {
 }
 
 resource "azurerm_subnet" "external" {
-  name = format("%s%s", var.prefix, "external")
-  resource_group_name = azurerm_virtual_network.net.resource_group_name
+  name                 = format("%s%s", var.prefix, "external")
+  resource_group_name  = azurerm_virtual_network.net.resource_group_name
   virtual_network_name = azurerm_virtual_network.net.name
-  address_prefixes = [var.networks.external]
+  address_prefixes     = [var.networks.external]
 }
 
 resource "azurerm_route_table" "external" {
-  name = format("%s%s", var.prefix, "external")
-  location = var.location
-  resource_group_name = azurerm_virtual_network.net.resource_group_name
+  name                          = format("%s%s", var.prefix, "external")
+  location                      = var.location
+  resource_group_name           = azurerm_virtual_network.net.resource_group_name
   disable_bgp_route_propagation = false #TODO check
 
   #route {
@@ -47,7 +47,7 @@ resource "azurerm_subnet" "internal" {
   virtual_network_name = azurerm_virtual_network.net.name
   address_prefixes     = [var.networks.internal]
 
-  service_endpoints         = ["Microsoft.AzureCosmosDB", "Microsoft.ContainerRegistry", "Microsoft.EventHub", "Microsoft.KeyVault", "Microsoft.ServiceBus", "Microsoft.Sql", "Microsoft.Storage"]
+  service_endpoints = ["Microsoft.AzureCosmosDB", "Microsoft.ContainerRegistry", "Microsoft.EventHub", "Microsoft.KeyVault", "Microsoft.ServiceBus", "Microsoft.Sql", "Microsoft.Storage"]
 }
 
 resource "azurerm_network_security_group" "internal" {

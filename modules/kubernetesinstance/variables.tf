@@ -6,14 +6,14 @@ variable "kubernetes_version" {
 }
 
 variable "registry_id" { #TODO move to internal...
-  type = string
+  type        = string
   description = "Default Registry of the Cluster"
 }
 
 variable "location" {
-  type = string
+  type        = string
   description = "Physical Location of the Resources"
-  default = "West Europe"
+  default     = "West Europe"
 }
 
 variable "networks" {
@@ -25,6 +25,6 @@ variable "networks" {
 }
 
 variable "prefix" {
-  type = string
+  type        = string
   description = "Prefix for the resource names"
 }

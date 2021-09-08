@@ -8,28 +8,28 @@ terraform {
 }
 
 provider "azurerm" {
-    features {}
+  features {}
 }
 
 module "instance-weu" {
-    source = "./modules/kubernetesinstance"
-    
-    prefix   = "tim"
-    location = "West Europe"
-    networks = {
-        external = "10.0.0.0/24"
-        internal = "172.16.0.0/16"
-    }
-    kubernetes_version = "1.21.2"
+  source = "./modules/kubernetesinstance"
 
-    registry_id = "" #TODO
+  prefix   = "tim"
+  location = "West Europe"
+  networks = {
+    external = "10.0.0.0/24"
+    internal = "172.16.0.0/16"
+  }
+  kubernetes_version = "1.21.2"
+
+  registry_id = "" #TODO
 }
 
 module "instance-1-np-1" {
-    source = "./modules/kubernetesnodepool"
+  source = "./modules/kubernetesnodepool"
 
-    name = "np1"
-    #max_count = 1
-    #vm_size = "Standard_D1_v2"
-    kubernetes_cluster = module.instance-weu.kubernetes_cluster
+  name = "np1"
+  #max_count = 1
+  #vm_size = "Standard_D1_v2"
+  kubernetes_cluster = module.instance-weu.kubernetes_cluster
 }
