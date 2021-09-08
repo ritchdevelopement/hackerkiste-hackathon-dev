@@ -12,7 +12,7 @@ provider "azurerm" {
 }
 
 module "instance-weu" {
-    source = "../modules/iaas/kubernetesinstance"
+    source = "./modules/kubernetesinstance"
     
     prefix   = "tim"
     location = "West Europe"
@@ -26,7 +26,7 @@ module "instance-weu" {
 }
 
 module "instance-1-np-1" {
-    source = "../modules/iaas/kubernetesnodepool"
+    source = "./modules/kubernetesnodepool"
 
     name = "np1"
     #max_count = 1
