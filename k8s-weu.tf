@@ -29,8 +29,6 @@ module "instance-weu" {
     internal = "172.16.0.0/16"
   }
   kubernetes_version = "1.21.2"
-
-  registry_id = "2021hackathon.azurecr.io"
 }
 
 module "instance-1-np-1" {

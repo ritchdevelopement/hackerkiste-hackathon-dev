@@ -8,6 +8,7 @@ variable "kubernetes_version" {
 variable "registry_id" {
   type        = string
   description = "Default Registry of the Cluster"
+  default = "/subscriptions/9278f6e1-910f-4293-bb13-c172ddb81ce4/resourceGroups/meta/providers/Microsoft.ContainerRegistry/registries/2021hackathon"
 }
 
 variable "location" {
