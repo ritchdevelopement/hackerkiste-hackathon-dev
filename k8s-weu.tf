@@ -5,6 +5,14 @@ terraform {
       version = "=2.46.0"
     }
   }
+
+  backend "azurerm" {
+    resource_group_name  = "meta"
+    storage_account_name = "hackathonterraform"
+    container_name       = "tfstate"
+    key                  = "prod.terraform.tfstate"
+  }
+
 }
 
 provider "azurerm" {
