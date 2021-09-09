@@ -17,12 +17,7 @@ resource "azurerm_route_table" "external" {
   name                          = format("%s%s", var.prefix, "external")
   location                      = var.location
   resource_group_name           = azurerm_virtual_network.net.resource_group_name
-  disable_bgp_route_propagation = false #TODO check
-
-  #route {
-  #  name = "route"
-  #  address_prefix = "Internet" #TODO Check
-  #}
+  disable_bgp_route_propagation = false
 }
 
 resource "azurerm_subnet_route_table_association" "external" {

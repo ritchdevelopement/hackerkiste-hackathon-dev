@@ -12,7 +12,6 @@ terraform {
     container_name       = "tfstate"
     key                  = "prod.terraform.tfstate"
   }
-
 }
 
 provider "azurerm" {
@@ -31,11 +30,15 @@ module "instance-weu" {
   kubernetes_version = "1.21.2"
 }
 
-module "instance-1-np-1" {
+module "instance-weu-np-1" {
   source = "./modules/kubernetesnodepool"
 
   name = "np1"
   #max_count = 1
   #vm_size = "Standard_D1_v2"
   kubernetes_cluster = module.instance-weu.kubernetes_cluster
+}
+
+output "info" {
+  value = format("Um auf das Cluster zuzugreifen öffne die Azure Shell und führe die folgenden Befehle aus:\n\naz aks get-credentials --resource-group %s --name %s\nkubectl get nodes\n", module.instance-weu.kubernetes_cluster.resource_group_name, module.instance-weu.kubernetes_cluster.name)
 }
