@@ -4,6 +4,45 @@ resource "azurerm_resource_group" "global" {
   location = var.location
 }
 
+# Network Setup
+resource "azurerm_virtual_network" "net" {
+  name                = var.prefix
+  location            = var.location
+  resource_group_name = azurerm_resource_group.global.name
+  address_space       = [var.node_network]
+  dns_servers         = ["1.1.1.1", "1.0.0.1", "8.8.8.8"]
+}
+
+resource "azurerm_subnet" "nodes" {
+  name                 = format("%s%s", var.prefix, "nodes")
+  resource_group_name  = azurerm_virtual_network.net.resource_group_name
+  virtual_network_name = azurerm_virtual_network.net.name
+  address_prefixes     = [var.node_network]
+}
+
+resource "azurerm_route_table" "nodes" {
+  name                          = format("%s%s", var.prefix, "nodes")
+  location                      = var.location
+  resource_group_name           = azurerm_virtual_network.net.resource_group_name
+  disable_bgp_route_propagation = false
+}
+
+resource "azurerm_subnet_route_table_association" "nodes" {
+  subnet_id      = azurerm_subnet.nodes.id
+  route_table_id = azurerm_route_table.nodes.id
+
+  depends_on = [
+    azurerm_route_table.nodes,
+    azurerm_subnet.nodes,
+  ]
+}
+
+resource "azurerm_network_security_group" "nodes" {
+  name                = format("%s%s", var.prefix, "nodes")
+  location            = azurerm_resource_group.global.location
+  resource_group_name = azurerm_resource_group.global.name
+}
+
 # AKS cluster
 resource "azurerm_kubernetes_cluster" "aks" {
   name                    = var.prefix
@@ -19,7 +58,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     min_count             = 1
     max_count             = 10
     vm_size               = "Standard_D2s_v3"
-    vnet_subnet_id        = azurerm_subnet.external.id
+    vnet_subnet_id        = azurerm_subnet.nodes.id
     availability_zones    = [1, 2, 3]
     enable_node_public_ip = false
     type                  = "VirtualMachineScaleSets"
@@ -62,7 +101,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
       enabled = false
     }
     http_application_routing {
-      enabled = false #insecure, missing tls
+      enabled = false
     }
   }
 
@@ -70,7 +109,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     balance_similar_node_groups      = false
     max_graceful_termination_sec     = 600
     scale_down_delay_after_add       = "10m"
-    scale_down_delay_after_delete    = "10s" #defaults to scan interval
+    scale_down_delay_after_delete    = "10s"
     scale_down_delay_after_failure   = "3m"
     scan_interval                    = "10s"
     scale_down_unneeded              = "10m"
@@ -86,11 +125,34 @@ resource "azurerm_role_assignment" "acr" {
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity.0.object_id
 }
 
-##grant Managed Idenitity (network change permission for APPGW?)
-#resource "azurerm_role_assignment" "network" {
-#  for_each = azurerm_kubernetes_cluster.aks
-#
-#  scope              = azurerm_virtual_network.net.id
-#  role_definition_name = "Contributor"
-#  principal_id       = azurerm_kubernetes_cluster.aks.identity.0.principal_id
-#}
+# Variables
+variable "kubernetes_version" {
+  type        = string
+  description = "Kubernetes Version to be used in the Clusters and Nodepools"
+  default = "1.21.2"
+}
+
+variable "registry_id" {
+  type        = string
+  description = "Default Registry of the Cluster"
+  default = "/subscriptions/9278f6e1-910f-4293-bb13-c172ddb81ce4/resourceGroups/meta/providers/Microsoft.ContainerRegistry/registries/2021hackathon"
+}
+
+variable "location" {
+  type        = string
+  description = "Physical Location of the Resources"
+  default     = "West Europe"
+}
+variable "node_network" {
+  type = string
+  description = "CIDR of the Clusters Nodes"
+}
+
+variable "prefix" {
+  type        = string
+  description = "Prefix for the resource names"
+}
+
+output "kubernetes_cluster" {
+  value = azurerm_kubernetes_cluster.aks
+}

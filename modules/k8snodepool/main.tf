@@ -20,6 +20,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepools" {
   orchestrator_version = var.kubernetes_cluster.kubernetes_version
 }
 
+# Variables
 variable "name" {
   type        = string
   description = "the name of the nodepool"

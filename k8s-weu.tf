@@ -18,27 +18,24 @@ provider "azurerm" {
   features {}
 }
 
-module "instance-weu" {
-  source = "./modules/kubernetesinstance"
+module "cluster-weu" {
+  source = "./modules/k8scluster"
 
   prefix   = "tim"
   location = "West Europe"
-  networks = {
-    external = "10.0.0.0/24"
-    internal = "172.16.0.0/16"
-  }
+  node_network = "10.0.0.0/24"
   kubernetes_version = "1.21.2"
 }
 
-module "instance-weu-np-1" {
-  source = "./modules/kubernetesnodepool"
+module "cluster-weu-np1" {
+  source = "./modules/k8snodepool"
 
   name = "np1"
   #max_count = 1
   #vm_size = "Standard_D1_v2"
-  kubernetes_cluster = module.instance-weu.kubernetes_cluster
+  kubernetes_cluster = module.cluster-weu.kubernetes_cluster
 }
 
 output "info" {
-  value = format("Um auf das Cluster zuzugreifen öffne die Azure Shell und führe die folgenden Befehle aus:\n\naz aks get-credentials --resource-group %s --name %s\nkubectl get nodes\n", module.instance-weu.kubernetes_cluster.resource_group_name, module.instance-weu.kubernetes_cluster.name)
+  value = format("Um auf das Cluster zuzugreifen öffne die Azure Shell und führe die folgenden Befehle aus:\n\naz aks get-credentials --resource-group %s --name %s\nkubectl get nodes\n", module.cluster-weu.kubernetes_cluster.resource_group_name, module.cluster-weu.kubernetes_cluster.name)
 }
