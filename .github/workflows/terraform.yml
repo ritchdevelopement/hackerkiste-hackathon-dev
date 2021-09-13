@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - main
+    - light
   pull_request:
 
 jobs:
