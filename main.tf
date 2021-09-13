@@ -47,13 +47,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-# Referenz zu einer extern erstellten Container Registry
+# Reference to a externally created Container Registry
 data "azurerm_container_registry" "acr" {
   name                = "2021hackathon"
   resource_group_name = "meta"
 }
 
-# Registry Pull Berechtigung für das Cluster
+# Registry Pull permission for the AKS Cluster
 resource "azurerm_role_assignment" "acr" {
   scope                = data.azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
