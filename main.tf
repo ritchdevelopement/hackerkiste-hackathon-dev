@@ -18,23 +18,22 @@ provider "azurerm" {
   features {}
 }
 
-variable "name" {
-  type        = string
-  description = "Name den die Resourcen in Azure haben sollen. Muss alphanumerisch sein."
-  default     = "light"
+locals {
+  name = "light"
 }
 
+
 resource "azurerm_resource_group" "global" {
-  name     = var.name
+  name     = local.name
   location = "West Europe"
 }
 
 # AKS cluster
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = var.name
+  name                = local.name
   resource_group_name = azurerm_resource_group.global.name
   location            = azurerm_resource_group.global.location
-  dns_prefix          = var.name
+  dns_prefix          = local.name
   node_resource_group = format("%s-%s", azurerm_resource_group.global.name, "aksrg")
 
   default_node_pool {
@@ -59,15 +58,4 @@ resource "azurerm_role_assignment" "acr" {
   scope                = data.azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity.0.object_id
-}
-
-output "info" {
-  value = format(<<EOT
-    Um auf das Cluster zuzugreifen öffne die Azure Shell und führe die folgenden Befehle aus:
-    
-    az aks get-credentials --resource-group %s --name %s
-    kubectl get nodes
-    EOT
-    , azurerm_kubernetes_cluster.aks.resource_group_name,
-    azurerm_kubernetes_cluster.aks.name)
 }
