@@ -19,22 +19,22 @@ provider "azurerm" {
 }
 
 locals {
-  name = "light"
+  name     = "light"
+  location = "West Europe"
 }
 
 
 resource "azurerm_resource_group" "global" {
   name     = local.name
-  location = "West Europe"
+  location = local.location
 }
 
-# AKS cluster
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = local.name
   resource_group_name = azurerm_resource_group.global.name
-  location            = azurerm_resource_group.global.location
+  location            = local.location
   dns_prefix          = local.name
-  node_resource_group = format("%s-%s", azurerm_resource_group.global.name, "aksrg")
+  node_resource_group = format("%s-%s", azurerm_resource_group.global.name, "aks-rg")
 
   default_node_pool {
     name       = "default"
