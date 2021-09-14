@@ -17,10 +17,10 @@ jobs:
         shell: bash
         working-directory: ./terraform
     outputs:
-      aks: ${{ steps.outputs.aks.aks }}
-      rg: ${{ steps.outputs.rg.rg }}
-      acr_name: ${{ steps.outputs.acr_name.acr_name }}
-      acr_url: ${{ steps.outputs.acr_url.acr_url }}
+      aks: ${{ steps.outputs.tfout.aks }}
+      rg: ${{ steps.outputs.tfout.rg }}
+      acr_name: ${{ steps.outputs.tfout.acr_name }}
+      acr_url: ${{ steps.outputs.tfout.acr_url }}
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
@@ -45,24 +45,13 @@ jobs:
       run: terraform apply -auto-approve -no-color
 
     - name: Terraform Outputs
-      id: rg
+      id: tfout
       run: |
-        echo "::set-output name=rg::$(terraform output resource_group_name)"
-
-    - name: Terraform Outputs
-      id: aks
-      run: |
-        echo "::set-output name=aks::$(terraform output aks_name)"
-
-    - name: Terraform Outputs
-      id: acr_name
-      run: |
-        echo "::set-output name=acr_name::$(terraform output acr_name)"
-
-    - name: Terraform Outputs
-      id: acr_url
-      run: |
-        echo "::set-output name=acr_url::$(terraform output acr_url)"
+        tfjson=$(terraform output -json)
+        echo "::set-output name=rg::$(echo $tfjson | jq -r '.resource_group_name.value')"
+        echo "::set-output name=aks::$(echo $tfjson | jq -r '.aks_name.value')"
+        echo "::set-output name=acr_name::$(echo $tfjson | jq -r '.acr_name.value')"
+        echo "::set-output name=acr_url::$(echo $tfjson | jq -r '.acr_url.value')"
 
   container:
     name: 'Container Build'
@@ -95,6 +84,7 @@ jobs:
 
       - name: Push
         run: docker push ${{ needs.terraform.outputs.acr_url }}/nginx:latest
+
   kubernetes:
     name: 'Kubernetes'
     needs: terraform
