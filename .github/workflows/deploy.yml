@@ -44,7 +44,8 @@ jobs:
       # if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve -no-color
 
-    - id: outputs
+    - name: Terraform Outputs
+      id: outputs
       run: |
         rg=$(terraform output resource_group_name)
         aks=$(terraform output aks_name)
@@ -52,7 +53,7 @@ jobs:
         acr_url=$(terraform output acr_url)
         echo "::set-output name=rg::${rg}"
         echo "::set-output name=aks::${aks}"
-        echo "::set-output name=acr_url::${acr_name}"
+        echo "::set-output name=acr_name::${acr_name}"
         echo "::set-output name=acr_url::${acr_url}"
 
   container:
@@ -79,8 +80,6 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az account show
-            az storage -h
             az acr login --name ${{ needs.terraform.outputs.acr_name }}
 
       - name: Build
@@ -102,11 +101,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: Azure/aks-set-context@v1
+      - name: Azure Login
+        uses: azure/login@v1
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: '${{ needs.terraform.outputs.aks }}'
-          resource-group: '${{ needs.terraform.outputs.rg }}'
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set Environemnt
+        run: |
+          az aks get-credentials --resource-group ${{ needs.terraform.outputs.rg }} --name ${{ needs.terraform.outputs.aks }}
 
       - uses: Azure/k8s-deploy@v1.4
         with:
