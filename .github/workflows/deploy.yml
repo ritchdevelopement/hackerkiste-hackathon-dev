@@ -52,6 +52,7 @@ jobs:
         echo "::set-output name=aks::$(echo $tfjson | jq -r '.aks_name.value')"
         echo "::set-output name=acr_name::$(echo $tfjson | jq -r '.acr_name.value')"
         echo "::set-output name=acr_url::$(echo $tfjson | jq -r '.acr_url.value')"
+        echo "::debug::TEST$(echo $tfjson | jq -r '.acr_url.value')"
 
   container:
     name: 'Container Build'
