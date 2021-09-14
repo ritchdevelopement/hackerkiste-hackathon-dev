@@ -59,3 +59,18 @@ resource "azurerm_role_assignment" "acr" {
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity.0.object_id
 }
+
+output "resource_group_name" {
+  value = azurerm_resource_group.global.name
+}
+
+output "aks_name" {
+  value = azurerm_kubernetes_cluster.aks.name
+}
+
+output "acr_name" {
+  value = data.azurerm_container_registry.acr.name
+}
+output "acr_url" {
+  value = data.azurerm_container_registry.acr.login_server
+}
