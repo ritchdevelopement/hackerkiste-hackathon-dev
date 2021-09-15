@@ -47,10 +47,10 @@ jobs:
     - name: Terraform Outputs
       id: tfout
       run: |
-        echo "::set-output name=rg::$(terraform output -no-color -raw resource_group_name)"
-        echo "::set-output name=aks::$(terraform output -no-color -raw aks_name)"
-        echo "::set-output name=acr_name::$(terraform output -no-color -raw acr_name)"
-        echo "::set-output name=acr_url::$(terraform output -no-color -raw acr_url)"
+        echo "::set-output name=rg::light"
+        echo "::set-output name=aks::light"
+        echo "::set-output name=acr_name::2021hackathon"
+        echo "::set-output name=acr_url::2021hackathon.azurecr.io"
 
   container:
     name: 'Container Build'
