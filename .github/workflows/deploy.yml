@@ -71,12 +71,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-      - name: Azure CLI script
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.0.72
-          inlineScript: |
-            az acr login --name ${{ needs.terraform.outputs.acr_name }}
+      - name: Docker Login to Registry
+        run: |
+          az acr login --name ${{ needs.terraform.outputs.acr_name }}
 
       - name: Build
         run: docker build -t ${{ needs.terraform.outputs.acr_url }}/nginx:latest .
