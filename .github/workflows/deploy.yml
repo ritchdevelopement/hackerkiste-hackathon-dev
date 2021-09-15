@@ -27,6 +27,8 @@ jobs:
       uses: actions/checkout@v2
 
     - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_wrapper: false
 
     - run: terraform init
     
@@ -47,14 +49,11 @@ jobs:
     - name: Terraform Outputs
       id: tfout
       run: |
-        rg=$(terraform output -no-color -raw resource_group_name)
-        aks=$(terraform output -no-color -raw aks_name)
-        acr_name=$(terraform output -no-color -raw acr_name)
-        acr_url=$(terraform output -no-color -raw acr_url)
-        echo "::set-output name=rg::$rg"
-        echo "::set-output name=aks::$aks"
-        echo "::set-output name=acr_name::$acr_name"
-        echo "::set-output name=acr_url::$acr_url"
+        tf=$(terraform output -no-color -json)
+        echo "::set-output name=rg::$(echo $tf | jq -r .resource_group_name.value)"
+        echo "::set-output name=aks::$(echo $tf | jq -r .aks_name.value)"
+        echo "::set-output name=acr_name::$(echo $tf | jq -r .acr_name.value)"
+        echo "::set-output name=acr_url::$(echo $tf | jq -r .acr_url.value)"
 
   container:
     name: 'Container Build'
