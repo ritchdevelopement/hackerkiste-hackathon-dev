@@ -105,10 +105,6 @@ jobs:
         run: |
           az aks get-credentials --resource-group ${{ needs.terraform.outputs.rg }} --name ${{ needs.terraform.outputs.aks }}
 
-      - uses: Azure/k8s-deploy@v1.4
-        with:
-          manifests: |
-            deployment.yaml
-            service.yaml
-          images: |
-            ${{ needs.terraform.outputs.acr_url }}/nginx:latest
+      - name: Deploy Manifests
+        run: |
+          kubectl apply -f deployment.yaml -f service.yaml
