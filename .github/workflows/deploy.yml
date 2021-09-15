@@ -11,15 +11,16 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
     runs-on: ubuntu-latest
     environment: production
+
     defaults:
       run:
         shell: bash
         working-directory: ./terraform
     outputs:
-      aks: ${{ steps.outputs.aks.aks }}
-      rg: ${{ steps.outputs.rg.rg }}
-      acr_name: ${{ steps.outputs.acrname.acr_name }}
-      acr_url: ${{ steps.outputs.acrurl.acr_url }}
+      aks: ${{ steps.tfout.outputs.aks }}
+      rg: ${{ steps.tfout.outputs.rg }}
+      acr_name: ${{ steps.tfout.outputs.acr_name }}
+      acr_url: ${{ steps.tfout.outputs.acr_url }}
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
@@ -44,20 +45,12 @@ jobs:
       run: terraform apply -auto-approve -no-color terraform.tfplan
 
     - name: Terraform Outputs
-      id: rg
-      run: echo "::set-output name=rg::light"
-    - name: Terraform Outputs
-      id: aks
-      run: echo "::set-output name=aks::light"
-    - name: Terraform Outputs
-      id: acrname
-      run: echo "::set-output name=acr_name::2021hackathon"
-    - name: Terraform Outputs
-      id: acrurl
-      run: echo "::set-output name=acr_url::2021hackathon.azurecr.io"
-
-    - name: TEST
-      run: echo "THIS IS A TEST ${{ steps.outputs.rg.rg }} IT IS OVER"
+      id: tfout
+      run: |
+        echo "::set-output name=rg::light"
+        echo "::set-output name=aks::light"
+        echo "::set-output name=acr_name::2021hackathon"
+        echo "::set-output name=acr_url::2021hackathon.azurecr.io"
 
   container:
     name: 'Container Build'
