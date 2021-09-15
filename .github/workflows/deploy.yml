@@ -56,6 +56,9 @@ jobs:
       id: acrurl
       run: echo "::set-output name=acr_url::2021hackathon.azurecr.io"
 
+    - name: TEST
+      run: echo "THIS IS A TEST ${{ steps.outputs.rg.rg }} IT IS OVER"
+
   container:
     name: 'Container Build'
     needs: terraform
