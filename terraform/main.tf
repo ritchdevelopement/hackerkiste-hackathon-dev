@@ -1,3 +1,4 @@
+# Configure the Azure Provider
 terraform {
   required_providers {
     azurerm = {
@@ -5,7 +6,8 @@ terraform {
       version = "=2.46.0"
     }
   }
-
+  
+# backend configuration block
   backend "azurerm" {
     resource_group_name  = "meta"
     storage_account_name = "hackathonterraform"
@@ -18,12 +20,13 @@ provider "azurerm" {
   features {}
 }
 
+# locals block
 locals {
   name     = "light"
   location = "West Europe"
 }
 
-
+# Managed Kubernetes Cluster
 resource "azurerm_resource_group" "global" {
   name     = local.name
   location = local.location
@@ -60,6 +63,7 @@ resource "azurerm_role_assignment" "acr" {
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity.0.object_id
 }
 
+#outputs
 output "resource_group_name" {
   value = azurerm_resource_group.global.name
 }
