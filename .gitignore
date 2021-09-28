@@ -1,5 +1,6 @@
-.terraform/
-terraform.tfstate
-terraform.tfstate.backup
-workspace.code-workspace
-.terraform.lock.hcl
+.idea/ 
+terraform/.terraform
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/.terraform.lock.hcl
+*.exe
