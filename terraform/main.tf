@@ -6,13 +6,13 @@ terraform {
       version = "=2.46.0"
     }
   }
-  
-# backend configuration block
+ 
+  # backend configuration block
   backend "azurerm" {
     resource_group_name  = "meta"
     storage_account_name = "hackathonterraform"
     container_name       = "tfstate"
-    key                  = "light.terraform.tfstate"
+    key                  = "lightarol.terraform.tfstate"
   }
 }
 
@@ -22,7 +22,7 @@ provider "azurerm" {
 
 # locals block
 locals {
-  name     = "light"
+  name     = "lightarol"
   location = "West Europe"
 }
 
@@ -49,6 +49,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type = "SystemAssigned"
   }
 }
+
+# TODO: Standard NGINX latest Container Image mitdeployen
+
 
 # Reference to a externally created Container Registry
 data "azurerm_container_registry" "acr" {
