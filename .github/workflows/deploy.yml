@@ -139,7 +139,7 @@ jobs:
 
       - name: "Install Ingress Controller"
         run: |
-          helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-controller      
+          helm upgrade ingress-nginx ingress-nginx/ingress-nginx --install --create-namespace --namespace ingress-controller      
 
       - name: Deploy Manifests
         run: |
