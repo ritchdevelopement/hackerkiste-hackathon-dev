@@ -56,18 +56,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-resource "helm_release" "nginx-ingress" {
-  name = "nginx-ingress"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart = "ingress-nginx/ingress-nginx"
-  namespace = "ingress-controller"
-}
-
-#helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-#helm repo update
-#helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-controller
-
-
 # Reference to a externally created Container Registry
 data "azurerm_container_registry" "acr" {
   name                = "2021hackathon"

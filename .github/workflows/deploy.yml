@@ -79,39 +79,32 @@ jobs:
           az acr login --name ${{ needs.terraform.outputs.acr_name }}
 
       # Build Old NGINX Frontend
-      - name: Build
+      - name: Build NGING Base Frontend
         run: docker build -t ${{ needs.terraform.outputs.acr_url }}/nginx:latest ./container
 
-      - name: Push
+      - name: Push NGING Base Frontend
         run: docker push ${{ needs.terraform.outputs.acr_url }}/nginx:latest
         
-      # Build Old NGINX Frontend
-      - name: Build
+      # Build Frontend
+      - name: Build Frontend
         run: docker build -t ${{ needs.terraform.outputs.acr_url }}/frontend-nginx:latest ./frontend
 
-      - name: Push
+      - name: Push Frontend
         run: docker push ${{ needs.terraform.outputs.acr_url }}/frontend-nginx:latest
 
       # Build Java Example Backend
-      - name: Build
+      - name: Build Java Example Backend
         run: docker build -t ${{ needs.terraform.outputs.acr_url }}/java-docker-backend-example:latest ./backend/java-docker
 
-      - name: Push
+      - name: Push Java Example Backend
         run: docker push ${{ needs.terraform.outputs.acr_url }}/java-docker-backend-example:latest
 
       # Build Golang Example Backend
-      - name: Build
+      - name: Build Go Example Backend
         run: docker build -t ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest ./go-docker
 
-      - name: Push
+      - name: Push Go Example Backend
         run: docker push ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest
-      
-      # Build Angular Example Frontend
-      - name: Build
-        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/angular-docker-frontend-example:latest ./frontend
-
-      - name: Push
-        run: docker push ${{ needs.terraform.outputs.acr_url }}/angular-docker-frontend-example:latest
 
   kubernetes:
     name: 'Kubernetes'
@@ -150,4 +143,4 @@ jobs:
 
       - name: Deploy Manifests
         run: |
-          kubectl apply -f deployment.yaml -f service.yaml
+          kubectl apply -f ./
