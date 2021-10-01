@@ -101,7 +101,7 @@ jobs:
 
       # Build Golang Example Backend
       - name: Build Go Example Backend
-        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest ./go-docker
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest ./backend/go-docker
 
       - name: Push Go Example Backend
         run: docker push ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest
