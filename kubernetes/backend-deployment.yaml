@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-backend-java
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-backend-java
+  template:
+    metadata:
+      labels:
+        app: web-backend-java
+    spec:
+      containers:
+      - name: web-backend-java
+        image: 2021hackathon.azurecr.io/java-docker-backend-example:latest
+        ports:
+        - containerPort: 80
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-backend-golang
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-backend-golang
+  template:
+    metadata:
+      labels:
+        app: web-backend-golang
+    spec:
+      containers:
+      - name: web-backend-golang
+        image: 2021hackathon.azurecr.io/go-docker-backend-example:latest
+        ports:
+        - containerPort: 80
