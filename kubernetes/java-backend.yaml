@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: java
+spec:
+  selector:
+    app: web-backend-java
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-backend-java
+  namespace: default
+  labels:
+    app: web-backend-java
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-backend-java
+  template:
+    metadata:
+      labels:
+        app: web-backend-java
+    spec:
+      containers:
+      - name: web-backend-java
+        image: 2021hackathon.azurecr.io/java-docker-backend-example:latest
+        ports:
+        - containerPort: 8080

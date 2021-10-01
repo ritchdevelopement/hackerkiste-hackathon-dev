@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 //@RequestMapping("docker-java-app")
-@RequestMapping("/")
+@RequestMapping("/backend/java")
 public class HelloController {
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)

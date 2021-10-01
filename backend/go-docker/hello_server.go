@@ -19,8 +19,9 @@ func main() {
 	// Create Server and Route Handlers
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", wild.IndexHandler)
-	r.HandleFunc("/name", name.NameHandler)
+	baseUrl := "/backend/go"
+	r.HandleFunc(baseUrl+"/", wild.IndexHandler)
+	r.HandleFunc(baseUrl+"/name", name.NameHandler)
 
 	srv := &http.Server{
 		Handler:      r,

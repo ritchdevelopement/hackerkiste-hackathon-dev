@@ -18,4 +18,4 @@ RUN npm run build
 # Stage 2
 FROM nginx:1.14.2-alpine
 
-COPY --from=build-step /app/dist /usr/share/nginx/html
+COPY --from=build-step /app/dist/my-app /usr/share/nginx/html

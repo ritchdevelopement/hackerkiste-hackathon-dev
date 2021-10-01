@@ -1,0 +1,29 @@
+#https://kubernetes.io/docs/concepts/configuration/configmap/#configmaps-and-pods
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-paths
+data:
+  deploy.conf: |
+    server {
+      listen       80;
+      listen  [::]:80;
+      server_name  localhost;
+      #access_log  /var/log/nginx/host.access.log  main;
+      location / {
+          root   /usr/share/nginx/html;
+          index  index.html index.htm;
+      }
+
+      location /backend/java {
+          proxy_pass   http://java.default.svc.cluster.local;
+      }
+
+      location /backend/go {
+          proxy_pass   http://go.default.svc.cluster.local;
+      }
+
+      location /name {
+          proxy_pass   http://go.default.svc.cluster.local;
+      }
+    }

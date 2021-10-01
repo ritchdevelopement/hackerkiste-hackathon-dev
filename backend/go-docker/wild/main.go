@@ -18,6 +18,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		Ip:       GetOutboundIP(),
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	enc := json.NewEncoder(w)
 	enc.Encode(responseJson)
 

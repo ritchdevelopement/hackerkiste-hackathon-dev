@@ -18,6 +18,19 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: 2021hackathon.azurecr.io/nginx:latest
+        image: 2021hackathon.azurecr.io/frontend-nginx:latest
         ports:
         - containerPort: 80
+        
+        # volumeMounts:
+      #  volumeMounts:
+       # - name: config
+        #  mountPath: "/etc/nginx/conf.d"
+         # readOnly: true
+     
+    #  volumes:
+     #   # You set volumes at the Pod level, then mount them into containers inside that Pod
+      #  - name: config
+       #   configMap:
+        #    # Provide the name of the ConfigMap you want to mount.
+         #   name: nginx-paths

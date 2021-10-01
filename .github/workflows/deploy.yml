@@ -78,12 +78,19 @@ jobs:
         run: |
           az acr login --name ${{ needs.terraform.outputs.acr_name }}
 
-      # Build Basic NGINX Frontend
+      # Build Old NGINX Frontend
       - name: Build
         run: docker build -t ${{ needs.terraform.outputs.acr_url }}/nginx:latest ./container
 
       - name: Push
         run: docker push ${{ needs.terraform.outputs.acr_url }}/nginx:latest
+        
+      # Build Old NGINX Frontend
+      - name: Build
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/frontend-nginx:latest ./frontend
+
+      - name: Push
+        run: docker push ${{ needs.terraform.outputs.acr_url }}/frontend-nginx:latest
 
       # Build Java Example Backend
       - name: Build
@@ -105,7 +112,6 @@ jobs:
 
       - name: Push
         run: docker push ${{ needs.terraform.outputs.acr_url }}/angular-docker-frontend-example:latest
-
 
   kubernetes:
     name: 'Kubernetes'
@@ -133,3 +139,8 @@ jobs:
       - name: Deploy Manifests
         run: |
           kubectl apply -f deployment.yaml -f service.yaml
+
+#TODO: Helm
+#helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+#helm repo update
+#helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-controller
