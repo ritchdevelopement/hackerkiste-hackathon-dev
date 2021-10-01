@@ -64,7 +64,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./container
+        #working-directory: ./container
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -78,11 +78,34 @@ jobs:
         run: |
           az acr login --name ${{ needs.terraform.outputs.acr_name }}
 
+      # Build Basic NGINX Frontend
       - name: Build
-        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/nginx:latest .
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/nginx:latest ./container
 
       - name: Push
         run: docker push ${{ needs.terraform.outputs.acr_url }}/nginx:latest
+
+      # Build Java Example Backend
+      - name: Build
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/java-docker-backend-example:latest ./backend/java-docker
+
+      - name: Push
+        run: docker push ${{ needs.terraform.outputs.acr_url }}/java-docker-backend-example:latest
+
+      # Build Golang Example Backend
+      - name: Build
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest ./go-docker
+
+      - name: Push
+        run: docker push ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest
+      
+      # Build Angular Example Frontend
+      - name: Build
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/angular-docker-frontend-example:latest ./frontend
+
+      - name: Push
+        run: docker push ${{ needs.terraform.outputs.acr_url }}/angular-docker-frontend-example:latest
+
 
   kubernetes:
     name: 'Kubernetes'
