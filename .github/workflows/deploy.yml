@@ -136,11 +136,18 @@ jobs:
         run: |
           az aks get-credentials --resource-group ${{ needs.terraform.outputs.rg }} --name ${{ needs.terraform.outputs.aks }}
 
+      - name: "Add Helm Repo"
+        run: | 
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+      
+      - name: "Update Helm Repo"
+        run: | 
+          helm repo update
+
+      - name: "Install Ingress Controller"
+        run: |
+          helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-controller      
+
       - name: Deploy Manifests
         run: |
           kubectl apply -f deployment.yaml -f service.yaml
-
-#TODO: Helm
-#helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-#helm repo update
-#helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-controller

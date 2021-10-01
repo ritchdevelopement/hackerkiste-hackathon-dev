@@ -56,7 +56,16 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-# TODO: Standard NGINX latest Container Image mitdeployen
+resource "helm_release" "nginx-ingress" {
+  name = "nginx-ingress"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart = "ingress-nginx/ingress-nginx"
+  namespace = "ingress-controller"
+}
+
+#helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+#helm repo update
+#helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-controller
 
 
 # Reference to a externally created Container Registry
