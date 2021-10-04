@@ -1,22 +1,18 @@
-# Dockerfile References: https://docs.docker.com/engine/reference/builder/
+# builder image
+FROM golang:1.13-alpine3.11 as builder
+RUN mkdir /build
+COPY . /build/
+WORKDIR /build
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o golang-example .
 
-# Start from the latest golang base image
-FROM golang:latest
 
-# Add Maintainer Info
-LABEL maintainer="Rajeev Singh <rajeevhub@gmail.com>"
+# generate clean, final image for end users
+FROM alpine:3.11.3
+COPY --from=builder /build/golang-example .
 
-# Set the Current Working Directory inside the container
-WORKDIR /app
-
-# Copy everything from the current directory to the Working Directory inside the container
-COPY . .
-
-# Build the Go app
-RUN go build -o main .
-
-# Expose port 8080 to the outside world
 EXPOSE 8080
 
-# Command to run the executable
-CMD ["./main"]
+# executable
+ENTRYPOINT [ "./golang-example" ]
+# arguments that can be overridden
+CMD [ "3", "300" ]

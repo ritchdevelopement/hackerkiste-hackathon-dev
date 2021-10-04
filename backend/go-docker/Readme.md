@@ -1,6 +1,6 @@
 # go-docker 
 
-Several Examples for building docker containers for your Go applications.
+Example golang application in docker
 
 ## Running the app locally
 
@@ -11,14 +11,12 @@ $ ./go-docker
 ```
 
 ```bash
-$ curl http://localhost:8080?name=Rajeev
-Hello, Rajeev
+$ curl http://localhost:8080/backend/go/
 ```
 
 ## Building and running the docker image
 
-Read the tutorial: [Building Docker Containers for Go Applications](https://www.callicoder.com/docker-golang-image-container-example/) 
-
-
-# Source: 
-https://github.com/callicoder/go-docker
+```bash
+$ docker build -t godocker .
+$ docker run -p 8080:8080 godocker
+```
