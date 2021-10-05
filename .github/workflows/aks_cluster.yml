@@ -1,5 +1,5 @@
 name: 'Hackathon'
-on: [push]
+on: [workflow_dispatch]
 
 jobs:
   terraform:
