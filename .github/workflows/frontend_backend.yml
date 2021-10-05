@@ -1,0 +1,55 @@
+name: 'Frontend Backend'
+on: [push]
+
+jobs:
+  container:
+    name: 'Container Build'
+    needs: terraform
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+        #working-directory: ./container
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Docker Login to Registry
+        run: |
+          az acr login --name ${{ needs.terraform.outputs.acr_name }}
+
+      # Build Old NGINX Frontend
+      - name: Build NGINX Base Frontend
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/nginx:latest ./container
+
+      - name: Push NGINX Base Frontend
+        run: docker push ${{ needs.terraform.outputs.acr_url }}/nginx:latest
+        
+      # Build Frontend
+      - name: Build Frontend
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/frontend-nginx:latest ./frontend
+
+      - name: Push Frontend
+        run: docker push ${{ needs.terraform.outputs.acr_url }}/frontend-nginx:latest
+
+      # Build Java Example Backend
+      - name: Build Java Example Backend
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/java-docker-backend-example:latest ./backend/java-docker
+
+      - name: Push Java Example Backend
+        run: docker push ${{ needs.terraform.outputs.acr_url }}/java-docker-backend-example:latest
+
+      # Build Golang Example Backend
+      - name: Build Go Example Backend
+        run: docker build -t ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest ./backend/go-docker
+
+      - name: Push Go Example Backend
+        run: docker push ${{ needs.terraform.outputs.acr_url }}/go-docker-backend-example:latest
+
