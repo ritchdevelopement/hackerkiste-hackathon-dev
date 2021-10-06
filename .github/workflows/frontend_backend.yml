@@ -52,3 +52,6 @@ jobs:
       - name: Push Go Example Backend
         run: docker push ${{ env.registryLoginServer }}/go-docker-backend-example:latest
 
+      - name: Deploy Manifests
+        run: |
+          kubectl apply -f ./stage_4_Frontend_Backend/

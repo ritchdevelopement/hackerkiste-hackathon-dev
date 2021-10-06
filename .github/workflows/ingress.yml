@@ -22,7 +22,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Set Environemnt
+      - name: Set Environment
         run: |
           az aks get-credentials --resource-group ${{ secrets.UNIQUE_NAME }} --name ${{ secrets.UNIQUE_NAME }}
 
@@ -38,6 +38,3 @@ jobs:
         run: |
           helm upgrade ingress-nginx ingress-nginx/ingress-nginx --install --create-namespace --namespace ingress-controller      
 
-      - name: Deploy Manifests
-        run: |
-          kubectl apply -f ./

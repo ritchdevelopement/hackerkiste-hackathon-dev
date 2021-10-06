@@ -37,3 +37,7 @@ jobs:
 
       - name: Push NGINX Base Frontend
         run: docker push ${{ env.registryLoginServer }}/nginx:latest
+
+      - name: Deploy Manifests
+        run: |
+          kubectl apply -f ./stage_2_SingleContainer/
