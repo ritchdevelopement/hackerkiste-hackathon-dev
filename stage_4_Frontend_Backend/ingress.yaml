@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: example-ingress
+  name: forntend_backend
   annotations:
     #nginx.org/rewrites: "serviceName!=nginx rewrite=/$3"
     #nginx.ingress.kubernetes.io/app-root: 
