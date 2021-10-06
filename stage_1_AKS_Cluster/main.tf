@@ -6,7 +6,7 @@ terraform {
       version = "=2.46.0"
     }
   }
- 
+
   # backend configuration block
   backend "azurerm" {
     resource_group_name  = "meta"
