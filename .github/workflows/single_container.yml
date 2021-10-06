@@ -25,11 +25,15 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
+
+      - name: Set Environment
+        run: |
+          az aks get-credentials --resource-group ${{ secrets.UNIQUE_NAME }} --name ${{ secrets.UNIQUE_NAME }}
+
       - name: Docker Login to Registry
         run: |
           az acr login --name ${{ env.registryName }}
-
+          
       # Build Old NGINX Frontend
       - name: Build NGINX Base Frontend
         run: docker build -t ${{ env.registryLoginServer }}/nginx:latest ./stage_3_SingleContainer
