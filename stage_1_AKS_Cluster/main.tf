@@ -50,11 +50,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vm_size    = "Standard_D2s_v3"
   }
 
-  addon_profile {
-    http_application_routing {
-      enabled = true
-    }
-  }
 
   identity {
     type = "SystemAssigned"

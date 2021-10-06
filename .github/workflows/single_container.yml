@@ -32,7 +32,7 @@ jobs:
 
       # Build Old NGINX Frontend
       - name: Build NGINX Base Frontend
-        run: docker build -t ${{ env.registryLoginServer }}/nginx:latest ./stage_2_SingleContainer
+        run: docker build -t ${{ env.registryLoginServer }}/nginx:latest ./stage_3_SingleContainer
 
       - name: Push NGINX Base Frontend
         run: docker push ${{ env.registryLoginServer }}/nginx:latest
