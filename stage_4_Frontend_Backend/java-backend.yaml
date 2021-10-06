@@ -34,3 +34,4 @@ spec:
         image: 2021hackathon.azurecr.io/java-docker-backend-example:latest
         ports:
         - containerPort: 8080
+        resources: {}

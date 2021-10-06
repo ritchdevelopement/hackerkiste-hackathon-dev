@@ -12,7 +12,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./stage_3_Ingress
+        working-directory: ./stage_2_Ingress
     steps:
       - name: Checkout
         uses: actions/checkout@v2

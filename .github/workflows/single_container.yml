@@ -40,4 +40,4 @@ jobs:
 
       - name: Deploy Manifests
         run: |
-          kubectl apply -f ./stage_2_SingleContainer/
+          kubectl apply -f ./stage_3_SingleContainer/
