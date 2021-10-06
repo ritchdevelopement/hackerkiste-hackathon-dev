@@ -20,6 +20,11 @@ provider "azurerm" {
   features {}
 }
 
+variable "uniquename"{
+  type = string
+  description = "Name for the ResourceGroup and AKS Cluster"
+}
+
 # locals block
 locals {
   name     = var.uniquename
