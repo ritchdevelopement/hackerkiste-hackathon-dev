@@ -1,4 +1,4 @@
-name: 'Frontend Backend'
+name: 'Stage 4 Frontend Backend'
 on: [workflow_dispatch]
 
 
@@ -30,13 +30,6 @@ jobs:
       - name: Docker Login to Registry
         run: |
           az acr login --name ${{ env.registryName }}
-
-      # Build Old NGINX Frontend
-      - name: Build NGINX Base Frontend
-        run: docker build -t ${{ env.registryLoginServer }}/nginx:latest ./stage_2_SingleContainer
-
-      - name: Push NGINX Base Frontend
-        run: docker push ${{ env.registryLoginServer }}/nginx:latest
         
       # Build Frontend
       - name: Build Frontend
