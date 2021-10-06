@@ -8,10 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
 
+
     defaults:
       run:
         shell: bash
-        working-directory: ./kubernetes
+        working-directory: ./stage_3_Ingress
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,7 +24,7 @@ jobs:
 
       - name: Set Environemnt
         run: |
-          az aks get-credentials --resource-group ${{ needs.terraform.outputs.rg }} --name ${{ needs.terraform.outputs.aks }}
+          az aks get-credentials --resource-group ${{ secrets.UNIQUE_NAME }} --name ${{ secrets.UNIQUE_NAME }}
 
       - name: "Add Helm Repo"
         run: | 

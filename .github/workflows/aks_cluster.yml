@@ -9,13 +9,14 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      TF_VAR_uniquename: ${{ secrets.UNIQUE_NAME }}
     runs-on: ubuntu-latest
     environment: production
 
     defaults:
       run:
         shell: bash
-        working-directory: ./terraform
+        working-directory: ./stage_1_AKS_Cluster
     outputs:
       aks: ${{ steps.tfout.outputs.aks }}
       rg: ${{ steps.tfout.outputs.rg }}

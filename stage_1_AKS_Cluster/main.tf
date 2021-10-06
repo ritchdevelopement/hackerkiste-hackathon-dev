@@ -12,7 +12,7 @@ terraform {
     resource_group_name  = "meta"
     storage_account_name = "hackathonterraform"
     container_name       = "tfstate"
-    key                  = "lightarol.terraform.tfstate"
+    key                  = "***CHANGEME****.tfstate"
   }
 }
 
@@ -22,7 +22,7 @@ provider "azurerm" {
 
 # locals block
 locals {
-  name     = "lightarol"
+  name     = var.uniquename
   location = "West Europe"
 }
 
