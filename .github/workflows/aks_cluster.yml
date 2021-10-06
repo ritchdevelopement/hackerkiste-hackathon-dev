@@ -1,4 +1,4 @@
-name: 'Hackathon'
+name: 'Stage 1 AKS Cluster'
 on: [workflow_dispatch]
 
 jobs:

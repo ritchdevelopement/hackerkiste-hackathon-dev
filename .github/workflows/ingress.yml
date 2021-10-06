@@ -1,4 +1,4 @@
-name: 'Hackathon'
+name: 'Stage 3 Ingress'
 on: [workflow_dispatch]
 
 jobs:
