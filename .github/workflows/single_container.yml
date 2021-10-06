@@ -10,7 +10,7 @@ jobs:
     
     env:
       registryName: "2021hackathon"
-      registryLoginServer: "myregistrysy.azurecr.io"
+      registryLoginServer: "2021hackathon.azurecr.io"
 
     defaults:
       run:
