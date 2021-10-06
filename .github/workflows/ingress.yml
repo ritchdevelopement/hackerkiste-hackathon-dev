@@ -4,7 +4,6 @@ on: [workflow_dispatch]
 jobs:
   kubernetes:
     name: 'Kubernetes'
-    needs: terraform
     runs-on: ubuntu-latest
     environment: production
 
