@@ -9,8 +9,8 @@ terraform {
 
   # backend configuration block
   backend "azurerm" {
-    resource_group_name  = "meta"
-    storage_account_name = "hackathonterraform"
+    resource_group_name  = "hackerkiste-resources"
+    storage_account_name = "hackerkistetfstate"
     container_name       = "tfstate"
     key                  = "***CHANGEME****.tfstate"
   }
@@ -58,8 +58,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 # Reference to a externally created Container Registry
 data "azurerm_container_registry" "acr" {
-  name                = "2021hackathon"
-  resource_group_name = "meta"
+  name                = "hackerkisteregistry"
+  resource_group_name = "hackerkiste-resources"
 }
 
 # Registry Pull permission for the AKS Cluster
