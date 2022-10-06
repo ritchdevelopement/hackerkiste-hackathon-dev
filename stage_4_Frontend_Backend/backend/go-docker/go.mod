@@ -1,4 +1,4 @@
-module github.com/CapgeminiCIS/hackerkiste-2021-hackathon-dev/backend/go-docker
+module github.com/CapgeminiCIS/hackerkiste-hackathon-dev/backend/go-docker
 
 require (
 	github.com/gorilla/context v1.1.1

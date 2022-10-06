@@ -31,6 +31,6 @@ spec:
     spec:
       containers:
       - name: web-backend-golang
-        image: 2021hackathon.azurecr.io/go-docker-backend-example:latest
+        image: hackerkisteregistry.azurecr.io/go-docker-backend-example:latest
         ports:
         - containerPort: 8080

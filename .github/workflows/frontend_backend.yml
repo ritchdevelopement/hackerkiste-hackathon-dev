@@ -9,8 +9,8 @@ jobs:
     environment: production
     
     env:
-      registryName: "2021hackathon"
-      registryLoginServer: "2021hackathon.azurecr.io"
+      registryName: "hackerkisteregistry"
+      registryLoginServer: "hackerkisteregistry.azurecr.io"
 
     defaults:
       run:
