@@ -1,5 +1,5 @@
 name: 'Stage 2 Ingress'
-on: [workflow_dispatch]
+on: [workflow_dispatch, push]
 
 jobs:
   kubernetes:
@@ -26,14 +26,14 @@ jobs:
           az aks get-credentials --resource-group ${{ secrets.UNIQUE_NAME }} --name ${{ secrets.UNIQUE_NAME }}
 
       - name: "Add Helm Repo"
-        run: | 
+        run: |
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-      
+
       - name: "Update Helm Repo"
-        run: | 
+        run: |
           helm repo update
 
       - name: "Install Ingress Controller"
         run: |
-          helm upgrade ingress-nginx ingress-nginx/ingress-nginx --install --create-namespace --namespace ingress-controller      
+          helm upgrade ingress-nginx ingress-nginx/ingress-nginx --install --create-namespace --namespace ingress-controller
 

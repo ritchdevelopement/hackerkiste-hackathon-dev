@@ -1,5 +1,5 @@
 name: 'Stage 1 AKS Cluster'
-on: [workflow_dispatch]
+on: [workflow_dispatch, push]
 
 jobs:
   terraform:
@@ -22,7 +22,7 @@ jobs:
       rg: ${{ steps.tfout.outputs.rg }}
       acr_name: ${{ steps.tfout.outputs.acr_name }}
       acr_url: ${{ steps.tfout.outputs.acr_url }}
-      
+
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
@@ -33,7 +33,7 @@ jobs:
         terraform_wrapper: false
 
     - run: terraform init
-    
+
     - name: Terraform fmt
       id: fmt
       run: terraform fmt -check

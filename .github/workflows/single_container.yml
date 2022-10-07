@@ -1,5 +1,5 @@
 name: 'Stage 3 Single Container'
-on: [workflow_dispatch]
+on: [workflow_dispatch, push]
 
 
 jobs:
@@ -7,7 +7,7 @@ jobs:
     name: 'Container Build'
     runs-on: ubuntu-latest
     environment: production
-    
+
     env:
       registryName: "hackerkisteregistry"
       registryLoginServer: "hackerkisteregistry.azurecr.io"
@@ -17,7 +17,7 @@ jobs:
         shell: bash
         #working-directory: ./container
     steps:
-      
+
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -33,7 +33,7 @@ jobs:
       - name: Docker Login to Registry
         run: |
           az acr login --name ${{ env.registryName }}
-          
+
       # Build Old NGINX Frontend
       - name: Build NGINX Base Frontend
         run: docker build -t ${{ env.registryLoginServer }}/nginx:latest ./stage_3_SingleContainer
